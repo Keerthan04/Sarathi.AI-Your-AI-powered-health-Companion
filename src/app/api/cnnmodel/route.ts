@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     // Read the incoming formData (image file)
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const category = (formData.get("category") as string) || "skin"; // Default to "skin"
+    const category = (formData.get("category") as string); // Default to "skin"
 
     console.log("Category:", category);
     console.log("File:", file?.name, file?.size);

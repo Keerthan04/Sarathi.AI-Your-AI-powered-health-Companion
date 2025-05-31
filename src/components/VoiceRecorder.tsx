@@ -10,6 +10,7 @@ interface VoiceRecorderProps {
   onTranscriptChange?: (text: string) => void;
   setTranscript: (text: string) => void;
   transcript: string;
+  onRecordingStateChange?: (isRecording: boolean) => void;
 }
 
 export default function VoiceRecorder({

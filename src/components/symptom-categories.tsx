@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { translateText } from "@/lib/utils";
 
 interface SymptomCategoriesProps {
@@ -19,6 +19,7 @@ const normalCategories = [
     icon: "🔴",
     description: "Rashes, wounds, infections",
     external: true,
+ 
   },
   {
     id: "eye",
@@ -26,6 +27,7 @@ const normalCategories = [
     icon: "👁️",
     description: "Vision, pain, discharge",
     external: true,
+
   },
   {
     id: "dental",
@@ -33,6 +35,7 @@ const normalCategories = [
     icon: "🦷",
     description: "Tooth pain, gum problems",
     external: true,
+
   },
   {
     id: "ear",
@@ -40,6 +43,7 @@ const normalCategories = [
     icon: "👂",
     description: "Hearing, pain, discharge",
     external: true,
+
   },
   {
     id: "respiratory",
@@ -47,6 +51,7 @@ const normalCategories = [
     icon: "🫁",
     description: "Cough, shortness of breath",
     external: false,
+
   },
   {
     id: "digestive",
@@ -54,6 +59,7 @@ const normalCategories = [
     icon: "🤢",
     description: "Nausea, pain, digestion",
     external: false,
+
   },
   {
     id: "neurological",
@@ -61,6 +67,7 @@ const normalCategories = [
     icon: "🧠",
     description: "Headache, dizziness",
     external: false,
+
   },
   {
     id: "musculoskeletal",
@@ -68,6 +75,7 @@ const normalCategories = [
     icon: "🦴",
     description: "Pain, stiffness, injury",
     external: false,
+
   },
 ];
 
@@ -80,12 +88,14 @@ export default function SymptomCategories({
   const [symptomAnalysisLabel, setSymptomAnalysisLabel] =
     useState("Symptom Analysis");
   const [imageRequiredLabel, setImageRequiredLabel] =
-    useState("Image Required");
+    useState("Select Your Category Based on Symptoms told");
   const [categories, setCategories] = useState(normalCategories);
   const [processedSymptom, setProcessedSymptom] = useState("");
   const [originalSymptom, setOriginalSymptom] = useState("");
   const [predictedClass, setPredictedClass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageRequired, setImageRequired] = useState("Image Required");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [translatedPredictedClass, setTranslatedPredictedClass] =
     useState("");
   const [error, setError] = useState("");
@@ -102,12 +112,14 @@ export default function SymptomCategories({
           translatedAnalysis,
           translatedImageRequired,
           translatedPredictedClass,
+          translatedImageRequired2,
           translatedCategories,
           symptomResponse,
         ] = await Promise.all([
           translateText("Symptom Analysis", language),
           translateText("Image Required", language),
-          translateText("Predicted Category", language),  
+          translateText("Predicted Category", language),
+          translateText("Image Required", language),  
           Promise.all(
             normalCategories.map(async (category) => {
               const [translatedName, translatedDescription] = await Promise.all(
@@ -129,7 +141,7 @@ export default function SymptomCategories({
             body: JSON.stringify({ symptomText, language }),
           }),
         ]);
-
+        setImageRequired(translatedImageRequired2 || "Image Required");
         setSymptomAnalysisLabel(translatedAnalysis || "Symptom Analysis");
         setImageRequiredLabel(translatedImageRequired || "Image Required");
         setCategories(translatedCategories);
@@ -188,13 +200,13 @@ export default function SymptomCategories({
               AI Analysis:
             </p>
             <p className="text-sm text-blue-700 mb-2">{processedSymptom}</p>
-            {predictedClass && (
+            {/* {predictedClass && (
               <div className="mt-2">
                 <Badge className="bg-green-100 text-green-800 text-xs">
                   {translatedPredictedClass}: {predictedClass}
                 </Badge>
               </div>
-            )}
+            )} */}
             {originalSymptom && originalSymptom !== symptomText && (
               <p className="text-xs text-blue-600 mt-2 italic">
                 Processed from: &quot;{originalSymptom}&quot;
@@ -205,7 +217,7 @@ export default function SymptomCategories({
       </div>
 
       <div>
-        <h4 className="font-medium mb-3">{imageRequiredLabel}</h4>
+        <h4 className="font-small mb-3">{imageRequiredLabel}</h4>
         <div className="grid grid-cols-2 gap-3">
           {categories.map((category) => (
             <Card
@@ -223,6 +235,9 @@ export default function SymptomCategories({
                     <p className="text-xs text-gray-500">
                       {category.description}
                     </p>
+                    {category.external && (
+                      <p className="text-xs text-gray-500">{imageRequired}</p>
+                    )}
                   </div>
                 </div>
               </CardContent>
