@@ -17,7 +17,8 @@ interface Message {
   timestamp: Date;
 }
 
-export default function ChatbotPage() {
+export default function ChatbotPage(
+  ) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,7 @@ export default function ChatbotPage() {
   // Get language from URL params (e.g., ?lang=hi-IN&voice=female)
   const language = searchParams.get("lang") || "en-US";
   const voiceGender = searchParams.get("voice") || "female";
-
+  const patientId = searchParams.get("patientId") || "PAT001";
   // Initialize welcome message
   useEffect(() => {
     const initializeChat = async () => {
@@ -174,7 +175,7 @@ export default function ChatbotPage() {
       const geminiRes = await fetch("/api/gemini", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: translatedInput }),
+        body: JSON.stringify({ prompt: translatedInput, patientId }),
       });
 
       if (!geminiRes.ok) {

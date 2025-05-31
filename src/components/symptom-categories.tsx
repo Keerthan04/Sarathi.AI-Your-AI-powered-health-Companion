@@ -228,7 +228,7 @@ export default function SymptomCategories({
               onClick={() => onCategorySelect(category.id)}
             >
               <CardContent className="p-4">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col items-center gap-3">
                   <span className="text-xl">{category.icon}</span>
                   <div>
                     <p className="text-sm font-semibold">{category.name}</p>
