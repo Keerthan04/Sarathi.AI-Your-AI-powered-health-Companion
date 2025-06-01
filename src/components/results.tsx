@@ -1355,7 +1355,7 @@ Important guidelines:
         >
           {translatedTexts.checkAnotherSymptom}
         </Button>
-        <Button onClick={() => router.push("/")} className="w-full">
+        <Button onClick={() => router.push("/dashboard&patientId=" + localStorage.getItem("patientId"))} className="w-full">
           {translatedTexts.backToHome}
         </Button>
       </div>
